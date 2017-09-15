@@ -45,6 +45,8 @@ export default function createPersistor(store, config) {
       storesToProcess.push(key);
     });
 
+    lastState = state;
+
     // time iterator (read: debounce)
     if (timeIterator === null) {
       timeIterator = setInterval(function () {
@@ -54,12 +56,10 @@ export default function createPersistor(store, config) {
           return;
         }
 
-        persistCurrentStateForKey(state, storesToProcess[0]);
+        persistCurrentStateForKey(lastState, storesToProcess[0]);
         storesToProcess.shift();
       }, debounce);
     }
-
-    lastState = state;
   });
 
   function findStoresToProcess(state) {
