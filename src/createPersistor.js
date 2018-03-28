@@ -42,11 +42,12 @@ export default function createPersistor (store, config) {
     })
 
     lastState = state
+    const len = storesToProcess.length
 
     // time iterator (read: debounce)
     if (timeIterator === null) {
       timeIterator = setInterval(() => {
-        if (storesToProcess.length === 0) {
+        if ((paused && len === storesToProcess.length) || storesToProcess.length === 0) {
           clearInterval(timeIterator)
           timeIterator = null
           return
